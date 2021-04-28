@@ -58,13 +58,13 @@
     <bool name="ads_flag">true</bool>
 
     <!--google admob keys-->
-    <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
-    <string name="admob_native_advance">ca-app-pub-3940256099942544/2247696110</string>
-    <string name="admob_interstitial">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="admob_app_id">ca-app-pub-2172557384512058~7424972950</string>
+    <string name="admob_native_advance">ca-app-pub-2172557384512058/1189192503</string>
+    <string name="admob_interstitial">ca-app-pub-2172557384512058/5824417994</string>
     <!--END google admob keys-->
 
     <!--facebook native banner placement id-->
-    <string name="fb_native_banner_id">Your_Facebook_Native_Banner_ID</string>
+    <string name="fb_native_banner_id">321479018916171_321482568915816</string>
     <!--END facebook native banner placement id-->
 
     <!--Change Privacy Policy URL-->
