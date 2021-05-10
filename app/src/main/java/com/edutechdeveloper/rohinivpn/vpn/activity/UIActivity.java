@@ -279,7 +279,7 @@ public abstract class UIActivity extends AppCompatActivity implements Navigation
 
                         new MaterialDialog.Builder(UIActivity.this)
                                 .title("Confirmation")
-                                .message("Are You Sure to Disconnect The UltimateVPN")
+                                .message("Are You Sure to Disconnect The Rohini VPN")
                                 .positiveText("Disconnect")
                                 .negativeText("CANCEL")
                                 .positiveColor(R.color.pink_700)
