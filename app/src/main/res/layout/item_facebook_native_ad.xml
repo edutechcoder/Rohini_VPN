@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
-        <com.facebook.ads.AdIconView
+        <com.facebook.ads.MediaView
             android:id="@+id/native_icon_view"
             android:layout_width="80dp"
             android:layout_height="60dp"

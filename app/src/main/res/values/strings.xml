@@ -64,7 +64,7 @@
     <!--END google admob keys-->
 
     <!--facebook native banner placement id-->
-    <string name="fb_native_banner_id">321479018916171_321482568915816</string>
+    <string name="fb_native_banner_id">IMG_16_9_APP_INSTALL#YOUR_PLACEMENT_ID</string>
     <!--END facebook native banner placement id-->
 
     <!--Change Privacy Policy URL-->

@@ -15,14 +15,21 @@ import androidx.core.content.ContextCompat;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.edutechdeveloper.rohinivpn.vpn.Config;
+//import com.facebook.ads.Ad;
+//import com.facebook.ads.AdError;
+//import com.facebook.ads.AdIconView;
+//import com.facebook.ads.AdOptionsView;
+//import com.facebook.ads.MediaView;
+//import com.facebook.ads.NativeAd;
+//import com.facebook.ads.NativeAdLayout;
+//import com.facebook.ads.NativeAdListener;
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
-import com.facebook.ads.AdIconView;
 import com.facebook.ads.AdOptionsView;
 import com.facebook.ads.MediaView;
-import com.facebook.ads.NativeAd;
 import com.facebook.ads.NativeAdLayout;
 import com.facebook.ads.NativeAdListener;
+import com.facebook.ads.NativeBannerAd;
 import com.northghost.hydraclient.R;
 
 import java.text.DecimalFormat;
@@ -74,8 +81,10 @@ public class SpeedTest extends AppCompatActivity {
     @BindView(R.id.vpn_speed_test)
     LottieAnimationView loading_bar;
 
-    private NativeAd nativeAd;
+
     private NativeAdLayout nativeAdLayout;
+    private NativeBannerAd nativeBannerAd;
+
 
     private LinearLayout adView;
 
@@ -269,9 +278,9 @@ public class SpeedTest extends AppCompatActivity {
         // now, while you are testing and replace it later when you have signed up.
         // While you are using this temporary code you will only get test ads and if you release
         // your code like this to the Google Play your users will not receive ads (you will get a no fill error).
-        nativeAd = new NativeAd(this, getResources().getString(R.string.fb_native_banner_id));
-
-        nativeAd.setAdListener(new NativeAdListener() {
+        //nativeAd = new NativeAd(this, getResources().getString(R.string.fb_native_banner_id));
+        nativeBannerAd = new NativeBannerAd(this, getResources().getString(R.string.fb_native_banner_id));
+        NativeAdListener nativeAdListener = new NativeAdListener() {
             @Override
             public void onMediaDownloaded(Ad ad) {
                 // Native ad finished downloading all assets
@@ -284,11 +293,11 @@ public class SpeedTest extends AppCompatActivity {
             @Override
             public void onAdLoaded(Ad ad) {
                 // Native ad is loaded and ready to be displayed
-                if (nativeAd == null || nativeAd != ad) {
+                if (nativeBannerAd == null || nativeBannerAd != ad) {
                     return;
                 }
                 // Inflate Native Ad into Container
-                inflateAd(nativeAd);
+                inflateAd(nativeBannerAd);
             }
 
             @Override
@@ -300,15 +309,17 @@ public class SpeedTest extends AppCompatActivity {
             public void onLoggingImpression(Ad ad) {
                 // Native ad impression
             }
-        });
+        };
 
         // Request an ad
-        nativeAd.loadAd();
+        nativeBannerAd.loadAd(nativeBannerAd.buildLoadAdConfig()
+                .withAdListener(nativeAdListener)
+                .build());
     }
 
-    private void inflateAd(NativeAd nativeAd) {
+    private void inflateAd(NativeBannerAd nativeBannerAd) {
 
-        nativeAd.unregisterView();
+        nativeBannerAd.unregisterView();
 
         // Add the Ad view into the ad container.
         nativeAdLayout = findViewById(R.id.native_ad_container);
@@ -319,37 +330,29 @@ public class SpeedTest extends AppCompatActivity {
 
         // Add the AdOptionsViewprivate NativeAdLayout nativeAdLayout;
         LinearLayout adChoicesContainer = findViewById(R.id.ad_choices_container);
-        AdOptionsView adOptionsView = new AdOptionsView(SpeedTest.this, nativeAd, nativeAdLayout);
+        AdOptionsView adOptionsView = new AdOptionsView(SpeedTest.this, nativeBannerAd, nativeAdLayout);
         adChoicesContainer.removeAllViews();
         adChoicesContainer.addView(adOptionsView, 0);
 
         // Create native UI using the ad metadata.
-        AdIconView nativeAdIcon = adView.findViewById(R.id.native_ad_icon);
         TextView nativeAdTitle = adView.findViewById(R.id.native_ad_title);
-        MediaView nativeAdMedia = adView.findViewById(R.id.native_ad_media);
         TextView nativeAdSocialContext = adView.findViewById(R.id.native_ad_social_context);
-        TextView nativeAdBody = adView.findViewById(R.id.native_ad_body);
         TextView sponsoredLabel = adView.findViewById(R.id.native_ad_sponsored_label);
+        MediaView nativeAdIconView = adView.findViewById(R.id.native_icon_view);
         Button nativeAdCallToAction = adView.findViewById(R.id.native_ad_call_to_action);
 
         // Set the Text.
-        nativeAdTitle.setText(nativeAd.getAdvertiserName());
-        nativeAdBody.setText(nativeAd.getAdBodyText());
-        nativeAdSocialContext.setText(nativeAd.getAdSocialContext());
-        nativeAdCallToAction.setVisibility(nativeAd.hasCallToAction() ? View.VISIBLE : View.INVISIBLE);
-        nativeAdCallToAction.setText(nativeAd.getAdCallToAction());
-        sponsoredLabel.setText(nativeAd.getSponsoredTranslation());
+        nativeAdCallToAction.setText(nativeBannerAd.getAdCallToAction());
+        nativeAdCallToAction.setVisibility(
+                nativeBannerAd.hasCallToAction() ? View.VISIBLE : View.INVISIBLE);
+        nativeAdTitle.setText(nativeBannerAd.getAdvertiserName());
+        nativeAdSocialContext.setText(nativeBannerAd.getAdSocialContext());
+        sponsoredLabel.setText(nativeBannerAd.getSponsoredTranslation());
 
         // Create a list of clickable views
         List<View> clickableViews = new ArrayList<>();
         clickableViews.add(nativeAdTitle);
         clickableViews.add(nativeAdCallToAction);
-
-        // Register the Title and CTA button to listen for clicks.
-        nativeAd.registerViewForInteraction(
-                adView,
-                nativeAdMedia,
-                nativeAdIcon,
-                clickableViews);
+        nativeBannerAd.registerViewForInteraction(adView, nativeAdIconView, clickableViews);
     }
 }
